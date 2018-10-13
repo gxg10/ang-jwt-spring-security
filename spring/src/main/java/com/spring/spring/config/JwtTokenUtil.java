@@ -69,5 +69,4 @@ public class JwtTokenUtil implements Serializable {
                         && !isTokenExpired(token));
     }
 
-
 }
