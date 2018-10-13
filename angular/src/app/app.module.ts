@@ -8,8 +8,11 @@ import { UserComponent } from './user/user.component';
 import { CustomMaterialModule } from './core/material.module';
 import { AppRoutingModule } from './core/app.routing.module';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserService } from './user.service';
+import { AuthService } from './core/auth-service';
+import { TokenStorage } from './core/token-storage';
+import { Interceptor } from './core/app.interceptor';
 
 
 @NgModule({
@@ -23,11 +26,14 @@ import { UserService } from './user.service';
     CustomMaterialModule,
     AppRoutingModule,
     FormsModule,
-    CustomMaterialModule,
     BrowserAnimationsModule,
     HttpClientModule
   ],
-  providers: [UserService],
+  providers: [ UserService, AuthService, TokenStorage, TokenStorage,
+    {provide: HTTP_INTERCEPTORS,
+    useClass: Interceptor,
+    multi : true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
