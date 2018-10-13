@@ -26,6 +26,7 @@ public class UserController {
 
     @RequestMapping(value="/signup", method = RequestMethod.POST)
     public User saveUser(@RequestBody UserDto user){
+
         return userService.save(user);
     }
 }

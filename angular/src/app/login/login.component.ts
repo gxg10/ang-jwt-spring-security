@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../core/auth-service';
+import { TokenStorage } from '../core/token-storage';
 
 @Component({
   selector: 'app-login',
@@ -8,17 +10,20 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              private authService: AuthService,
+              private token: TokenStorage) { }
 
   username: string;
   password: string;
 
   login(): void {
-    if (this.username === 'admin' && this.password === 'admin'){
-     this.router.navigate(['user']);
-    } else {
-      alert('Invalid credentials');
-    }
+    this.authService.attemptAuth(this.username, this.password).subscribe(
+      data => {
+        this.token.saveToken(data.token);
+        this.router.navigate(['user']);
+      }
+    );
   }
 
 }
